@@ -3,7 +3,7 @@ Html DOM Parser Written in Python (library for data scraping)
 
 Example Usage:
 
-```
+```python
 import requests
 import parseMyHtml
 
