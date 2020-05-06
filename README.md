@@ -3,7 +3,7 @@ Html DOM Parser Written in Python (library for data scraping)
 
 Example Usage:
 
-`
+```
 import requests
 import parseMyHtml
 
@@ -22,4 +22,4 @@ if len(_price_element) > 0:
 else:
     print(parser.html)
     print("Nothing found")
-`
+```
