@@ -1,7 +1,7 @@
 # parseMyHtml
 Html DOM Parser Written in Python (library for data scraping)
 
-Example 1:
+# Example 1:
 
 ```python
 # --------------------------------------------------
@@ -42,7 +42,7 @@ else:
 
 ```
 
-Example 2
+# Example 2:
 
 ```python
 # ---------------------------------------------------------------
