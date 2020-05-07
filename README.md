@@ -54,7 +54,7 @@ import requests
 # Import parseMyHtml
 import parseMyHtml
 
-# URL Where the bitcoin price is located
+# URL where the amount of available jobs is located
 url = 'https://www.python.org/jobs/'
 
 # Get request html
@@ -91,5 +91,4 @@ else:
     # Display the html returned from the request
     print(parser.html)
     print("Nothing found")
-
 ```
