@@ -74,7 +74,7 @@ _jobs_element = parser.get_by_full_element('<h1 class="call-to-action"')
 
 # Make sure the list contains atleast one object
 if len(_jobs_element) > 0:
-    # Print the text and print the attributes in a new line and get said attributes in another new line
+    # Get the first returned element in the list
     __jobs_element = _jobs_element[0]
     # Scrape the value of the string and remove the excess string
     _text_jobs_available = "( " + __jobs_element.text[:__jobs_element.text.rfind("jobs on")].strip() + " )"
@@ -91,4 +91,5 @@ else:
     # Display the html returned from the request
     print(parser.html)
     print("Nothing found")
+
 ```
