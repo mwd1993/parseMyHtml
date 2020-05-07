@@ -35,6 +35,7 @@ _price_element = parser.get_by_full_element('<span class="push-data " data-forma
 if len(_price_element) > 0:
     # The Bit Coin Price value is stored in the html webpage under the attribute jsvalue
     print("Bitcoin Price: " + str(_price_element[0].getAttribute("jsvalue")))
+    # OR print("Bitcoin Price: " + str(_price_element[0].text))
 else:
     # Display the html returned from the request
     print(parser.html)
