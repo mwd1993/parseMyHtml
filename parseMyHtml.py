@@ -39,125 +39,94 @@ class parseMyHtml:
         _array = self.html.split("<" + type)
         print("<" + type + " - " + str(_array[index]) + "  " + str(len(_array)))
 
-    def parse(self,html):
-        self.html = html
+    def parse(self, html):
+        self.html = html.replace("\n", "")
+        self.html = self.html.replace("<br/>", "")
         _array = self.html.split(">")
+        # print(str(_array))
+        _element_list = ["div", "font", "small", "p", "h1", "h2", "h3", "h4", "h5", "a", "span", "body"]
         _obj = ""
+        _last_obj = ""
+        _last_last_obj = ""
+        _index = -1
+        _type = ""
         for element in _array:
-            # print(element)
+            _index = _index + 1
             if "<" in element and "</" not in element:
-                if "<div" in element:
-                    _obj = parseMyHtmlObject()
-                    _obj.type = "div"
-                    _obj.full = element + ">"
-                    _obj.attributes = element.replace("<div", "").strip()
-                    # print("attributes (" + _obj.attributes + ")")
-                    self.divs.append(_obj)
 
-                if "<font" in element:
-                    _obj = parseMyHtmlObject()
-                    _obj.type = "font"
-                    _obj.full = element + ">"
-                    _obj.attributes = element.replace("<font", "").strip()
-                    # print("attributes (" + _obj.attributes + ")")
-                    self.fonts.append(_obj)
+                if " " in element:
+                    _type = element.strip().split(" ")[0]
+                    _type = _type[1:]
+                else:
+                    _type = element.strip()
+                    _type = _type[1:]
 
-                if "<small" in element:
-                    _obj = parseMyHtmlObject()
-                    _obj.type = "small"
-                    _obj.full = element + ">"
-                    _obj.attributes = element.replace("<small", "").strip()
-                    # print("attributes (" + _obj.attributes + ")")
-                    self.smalls.append(_obj)
-                    print("found small")
+                # print(element)
 
-                if "<p" in element:
-                    _obj = parseMyHtmlObject()
-                    _obj.type = "p"
-                    _obj.full = element + ">"
-                    _obj.attributes = element.replace("<p", "").strip()
-                    # print("attributes (" + _obj.attributes + ")")
-                    self.ps.append(_obj)
+                if not _type:
+                    if "<" in element:
+                        _type = element.split("<")
+                        _type = _type[1][0:].strip()
+                        _type = _type.split(" ")[0]
+                        element = element[element.rfind("<"):]
 
-                if "<h1" in element:
-                    _obj = parseMyHtmlObject()
-                    _obj.type = "h1"
-                    _obj.full = element + ">"
-                    _obj.attributes = element.replace("<h1", "").strip()
-                    # print("attributes (" + _obj.attributes + ")")
-                    self.h1s.append(_obj)
+                        #print("in? " + (str(_type in _element_list)) + " type: " + _type + " - " + str(_element_list))
 
-                if "<h2" in element:
-                    _obj = parseMyHtmlObject()
-                    _obj.type = "h2"
-                    _obj.full = element + ">"
-                    _obj.attributes = element.replace("<h2", "").strip()
-                    # print("attributes (" + _obj.attributes + ")")
-                    self.h2s.append(_obj)
+                if _type:
+                    #print("type = " + _type + " in element " + element)
+                    if _type in _element_list:
 
-                if "<h3" in element:
-                    _obj = parseMyHtmlObject()
-                    _obj.type = "h3"
-                    _obj.full = element + ">"
-                    _obj.attributes = element.replace("<h3", "").strip()
-                    # print("attributes (" + _obj.attributes + ")")
-                    self.h3s.append(_obj)
+                        _obj = parseMyHtmlObject(self)
+                        _obj.type = _type
+                        _obj.full = element + ">".strip()
+                        _obj.attributes = element.replace("<" + _type, "").strip()
+                        _obj.index = _index
 
-                if "<h4" in element:
-                    _obj = parseMyHtmlObject()
-                    _obj.type = "h4"
-                    _obj.full = element + ">"
-                    _obj.attributes = element.replace("<h4", "").strip()
-                    # print("attributes (" + _obj.attributes + ")")
-                    self.h4s.append(_obj)
+                        __type = _type
 
-                if "<a" in element:
-                    _obj = parseMyHtmlObject()
-                    _obj.type = "a"
-                    _obj.full = element + ">"
-                    _obj.attributes = element.replace("<a", "").strip()
-                    _obj.link = find_between(_obj.attributes, "href='", "'")
-                    # print("attributes (" + _obj.attributes + ")")
-                    self.links.append(_obj)
+                        if _type == "a":
+                            __type = "link"
 
-                if "<span" in element:
-                    _obj = parseMyHtmlObject()
-                    _obj.type = "span"
-                    _obj.full = element + ">"
-                    _obj.attributes = element.replace("<span", "").strip()
-                    # _obj.link = find_between(_obj.attributes,"href='","'")
-                    # print("attributes (" + _obj.attributes + ")")
-                    self.spans.append(_obj)
-
-                if "<body" in element:
-                    _obj = parseMyHtmlObject()
-                    _obj.type = "body"
-                    _obj.full = element + ">"
-                    _obj.attributes = element.replace("<body", "").strip()
-                    # print("attributes (" + _obj.attributes + ")")
-                    self.bodys.append(_obj)
+                        eval("self." + __type + "s.append(_obj)")
+                else:
+                    print("no type of " + element)
 
                 if _obj:
                     _obj.full = _obj.full.strip()
                     self.all.append(_obj)
             else:
+                if "</" in element:
+
+                    if _last_obj and _last_last_obj:
+                        # print("closer " + element + "\nlast_obj = " + _last_last_obj.full)
+                        pass
+
                 if _last_obj and not _last_obj.text:
                     element_list = [
                         "a",
                         "div",
                         "small",
                         "p",
-                        "h",
+                        "h1",
+                        "h2",
+                        "h3",
+                        "h4",
+                        "h5",
                         "span",
                         "font"
                     ]
                     if _last_obj.type in element_list:
+                        # print(_last_obj.type + " setting text to " + _last_obj.attributes)
+
                         _last_obj.text = element
                         _last_obj.text = _last_obj.text[0:_last_obj.text.rfind("<")]
-                        # print(_last_obj.type + " -> " + _last_obj.text)
+
+                        _last_last_obj = _last_obj
+
             _last_obj = _obj
 
     def get_by_full_element(self, el):
+        # print(el[:-1])
         _list = []
         for _obj in self.all:
             if el in _obj.full:
@@ -176,9 +145,61 @@ class parseMyHtml:
 
 
 class parseMyHtmlObject:
-    def __init__(self):
+    def __init__(self, _parent):
+        self.parent = _parent
         self.text = ""
         self.attributes = ""
+
+    def getHtml(self):
+        _down_level = 0
+        _html = self.parent.html
+
+        _html_array = _html.split(">")
+
+        _start = _html_array[self.index].strip()
+        _start = _start.split(" ")[0]
+
+        if _start == "a":
+            _start = "<a"
+
+        # print("start = " + _start)
+
+        _closers = {
+            "<p": "</p",
+            "<div": "</div",
+            "<a": "</a",
+            "<div": "</div",
+            "<h1": "</h1",
+            "<h2": "</h2",
+            "<span": "</span",
+            "<a":"</a"
+        }
+
+        _closer = _closers[_start]
+
+        _build = ""
+
+        _index = -1
+        for _element in _html_array:
+            _index = _index + 1
+            if _index < self.index:
+                # print("passing " + str(_index))
+                continue
+            _build = _build + _element + ">"
+            if _start in _element and not _closer in _element and _index > 0 and self.full not in _element:
+                _down_level = _down_level + 1
+                # print("going down a level " + _element)
+            elif _closer in _element:
+                _down_level = _down_level - 1
+                # print("going up a level " + _element)
+
+            if _closer in _element and _down_level == 0:
+                # print("found closer -> " + _element)
+                break
+
+        # print(str(_html_array) + " - start " + _start + " - closer " + _closer)
+        # print("build: " + _build)
+        return _build.strip()
 
     def getAttribute(self, _type):
         _str = find_between(self.attributes, _type + "='", "'")
