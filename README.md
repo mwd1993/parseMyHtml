@@ -74,14 +74,19 @@ _jobs_element = parser.get_by_full_element('<h1 class="call-to-action"')
 
 # Make sure the list contains atleast one object
 if len(_jobs_element) > 0:
+    
     # Get the first returned element in the list
     __jobs_element = _jobs_element[0]
+    
     # Scrape the value of the string and remove the excess string
     _text_jobs_available = "( " + __jobs_element.text[:__jobs_element.text.rfind("jobs on")].strip() + " )"
+    
     # Get the attributes of the element object
     _text_jobs_attributes = __jobs_element.attributes
+    
     # Get the value of the attribute 'class'
     _text_jobs_class = __jobs_element.getAttribute("class")
+    
     # Print the jobs available, the attributes the element object contains, the value of 'class' of the object and the objects raw HTML
     # -----------------------------------------------------------------------------------------------------------------------------------
     print("Jobs available:\t\t" + _text_jobs_available + "\nElement Object Attributes:\t\t" + _text_jobs_attributes + "\nElement Object Class Value:\t\t" + _text_jobs_class)
@@ -91,4 +96,5 @@ else:
     # Display the html returned from the request
     print(parser.html)
     print("Nothing found")
+
 ```
