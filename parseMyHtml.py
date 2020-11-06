@@ -21,7 +21,7 @@ class parseMyHtml:
         # HTML
         self.html = ""
         # List of accepted tags
-        self.element_list = ["div", "font", "small", "p", "h1", "h2", "h3", "h4", "h5", "a", "span", "body"]
+        self.element_list = ["div", "font", "small", "p", "h1", "h2", "h3", "h4", "h5", "a", "span", "body","input"]
 
         # List of all tags that contain respective objects
         # -------------------------------------------------
@@ -37,6 +37,7 @@ class parseMyHtml:
         self.spans = []
         self.smalls = []
         self.fonts = []
+        self.inputs = []
         self.all = []
         # -------------------------------------------------
 
@@ -167,7 +168,7 @@ class parseMyHtmlObject:
 
     def getHtml(self):
 
-        # Split HTML into an arrau
+        # Split HTML into an array
         _html = self.parent.html
         _html_array = _html.split(">")
 
@@ -191,7 +192,8 @@ class parseMyHtmlObject:
             "<h1": "</h1",
             "<h2": "</h2",
             "<span": "</span",
-            "<a": "</a"
+            "<a": "</a",
+            "<input":"</input"
         }
 
         # Get the closer element key
